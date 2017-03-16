@@ -163,13 +163,14 @@ function createInline() {
   } else {
     console.log(chalk.cyan('开始生成' + platform + '平台内置包...'));
 
+    let suffix = bundleOutput.substr(bundleOutput.lastIndexOf('.'));
     let command = [
       'mkdir -p ' + INLINE_DIR,
       'rm -rf ' + platformInlineDir,
       'cp -rf ' + platformDir + ' ' + platformInlineDir,
       'cd ' + platformInlineDir,
-      'mv index.' + platform + '.bundle ' + projectName + '.bundle',
-      'mv index.' + platform + '.bundle.meta ' + projectName + '.bundle.meta',
+      'mv ' + bundleOutput + ' ' + projectName + suffix,
+      'mv ' + bundleOutput + '.meta ' + projectName + suffix + '.meta',
       'zip -r ' + platformInline + '.zip ./*',
       'cd ' + INLINE_DIR,
       'rm -rf ' + platformInline + '.zip',
