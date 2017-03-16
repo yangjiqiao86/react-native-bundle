@@ -1,0 +1,28 @@
+{
+  "name": "react-native-bundle",
+  "version": "0.0.1",
+  "description": "react native 自动化打包工具",
+  "main": "index.js",
+  "scripts": {
+    "install": "node ./bin/install.js",
+    "uninstall": "node ./bin/uninstall.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yangjiqiao86/react-native-bundle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yangjiqiao86/react-native-bundle/issues"
+  },
+  "homepage": "https://github.com/yangjiqiao86/react-native-bundle#readme",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "nodejs-fs-utils": "^1.0.26",
+    "q": "^1.4.1",
+    "shelljs": "^0.7.6",
+    "yargs": "^6.6.0"
+  }
+}
