@@ -49,8 +49,7 @@ Usage: bundle [options]
   -h, --help        显示帮助信息                                          [布尔]
 
 示例：
-  bundle --platform ios -z -i -d --dest
-  build --zipdest build --inlinedest build
+  bundle --platform ios -z -i -d --dest build --zipdest build --inlinedest build
 
 copyright 2017
 ```
