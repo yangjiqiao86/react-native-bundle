@@ -9,7 +9,9 @@ const yargs = require('yargs');
 const shell = require('shelljs');
 
 const argv = yargs.usage('Usage: bundle [options]')
-  .example('bundle --platform ios -z -i -d --dest build --zipdest build --inlinedest build')
+  .example('bundle --platform ios -z -i -d --dest build --dest-zip build --dest-inline build')
+  .help('h')
+  .alias('h', 'help')
   .options({
     p: {
       alias: 'platform',
@@ -33,27 +35,30 @@ const argv = yargs.usage('Usage: bundle [options]')
       describe: '是否开发环境[true|false]，开发环境代码不进行压缩',
       boolean: true
     },
-    a: {
-      alias: 'dest',
+    'dest': {
       default: 'build',
       describe: '打包文件生成目录',
       type: 'string'
     },
-    b: {
-      alias: 'zipdest',
+    'dest-zip': {
       default: 'build',
       describe: '打zip包生成目录',
       type: 'string'
     },
-    c: {
-      alias: 'inlinedest',
+    'dest-inline': {
       default: 'build',
       describe: '打内置包生成目录',
       type: 'string'
+    },
+    'entry-file': {
+      describe: '输入文件名，例：index.ios.js',
+      type: 'string'
+    },
+    'bundle-output': {
+      describe: '输出文件名，例：index.ios.bundle',
+      type: 'string'
     }
   })
-  .help('h')
-  .alias('h', 'help')
   .epilog('copyright 2017')
   .argv;
 
@@ -62,12 +67,14 @@ const zip = argv.zip;
 const inline = argv.inline;
 const dev = argv.dev;
 const dest = argv.dest;
-const zipdest = argv.zipdest;
-const inlinedest = argv.inlinedest;
+const destZip = argv['dest-zip'];
+const destInline = argv['dest-inline'];
+const entryFile = argv['entry-file'] || ('index.' + platform + '.js');
+const bundleOutput = argv['bundle-output'] || ('index.' + platform + '.bundle');
 
 const BUNDLE_DIR = path.join(process.cwd(), dest);
-const ZIP_DIR = path.join(process.cwd(), zipdest);
-const INLINE_DIR = path.join(process.cwd(), inlinedest);
+const ZIP_DIR = path.join(process.cwd(), destZip);
+const INLINE_DIR = path.join(process.cwd(), destInline);
 
 const projectName = process.env.npm_package_name.replace('rn-', '');
 const platformDir = path.join(BUNDLE_DIR, platform);
@@ -101,7 +108,7 @@ function createBundle() {
 
   let deferred = Q.defer();
   let command = [
-    'react-native bundle --entry-file index.' + platform + '.js --platform ' + platform + ' --dev ' + dev + ' --bundle-output ' + platformDir + '/index.' + platform + '.bundle --assets-dest ' + platformDir
+    'react-native bundle --entry-file ' + entryFile + ' --platform ' + platform + ' --dev ' + dev + ' --bundle-output ' + platformDir + '/' + bundleOutput + ' --assets-dest ' + platformDir
   ].join(' && ');
 
   shell.exec(command, function(code, stdout, stderr) {
@@ -156,13 +163,14 @@ function createInline() {
   } else {
     console.log(chalk.cyan('开始生成' + platform + '平台内置包...'));
 
+    let suffix = bundleOutput.substr(bundleOutput.lastIndexOf('.'));
     let command = [
       'mkdir -p ' + INLINE_DIR,
       'rm -rf ' + platformInlineDir,
       'cp -rf ' + platformDir + ' ' + platformInlineDir,
       'cd ' + platformInlineDir,
-      'mv index.' + platform + '.bundle ' + projectName + '.bundle',
-      'mv index.' + platform + '.bundle.meta ' + projectName + '.bundle.meta',
+      'mv ' + bundleOutput + ' ' + projectName + suffix,
+      'mv ' + bundleOutput + '.meta ' + projectName + suffix + '.meta',
       'zip -r ' + platformInline + '.zip ./*',
       'cd ' + INLINE_DIR,
       'rm -rf ' + platformInline + '.zip',
