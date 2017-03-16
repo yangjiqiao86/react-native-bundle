@@ -1,0 +1,24 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Windows folder configuration file
+Desktop.ini
+
+# Windows thumbnail cache
+Thumbs.db
+
+# Mac desktop Services Store
+.DS_Store
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Temp directories
+tmp
+temp
+.tmp
+
+# Dependency directories
+node_modules
+bower_components
