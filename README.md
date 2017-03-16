@@ -17,9 +17,9 @@ npm install react-native-bundle --save-dev
     "bundle": "npm link && bundle --platform ios && bundle --platform android && npm unlink",
     "bundle-ios": "npm link && bundle --platform ios && npm unlink",
     "bundle-android": "npm link && bundle --platform android && npm unlink",
-    "zip": "npm link && bundle --platform ios -z -i --dest build --zipdest build --inlinedest build && bundle --platform android -z -i --dest build --zipdest build --inlinedest build && npm unlink",
-    "zip-ios": "npm link && bundle --platform ios -z -i --dest build --zipdest build --inlinedest build && npm unlink",
-    "zip-android": "npm link && bundle --platform android -z -i --dest build --zipdest build --inlinedest build && npm unlink",
+    "zip": "npm link && bundle --platform ios -z -i --dest build --dest-zip build --dest-inline build && bundle --platform android -z -i --dest build --dest-zip build --dest-inline build && npm unlink",
+    "zip-ios": "npm link && bundle --platform ios -z -i --dest build --dest-zip build --dest-inline build && npm unlink",
+    "zip-android": "npm link && bundle --platform android -z -i --dest build --dest-zip build --dest-inline build && npm unlink",
     "...": "..."
   }
 }
