@@ -1,15 +1,5 @@
 #!/usr/bin/env node
 
-/**
- * RN 资源打包(Zip包. 配合 npm scripts 使用)
- * @author 李永凯（liyongkai@xiaoyouzi.com）
- * @log
- *   2016-11-30
- *   1. 修改成Promise方式 @by zhuzhenyu@xiaoyouzi.com
- *   2017-01-24
- *   1. 添加打内置包功能 @by liyongkai@xiaoyouzi.com
- */
-
 'use strict';
 
 const path = require('path');
@@ -19,7 +9,7 @@ const yargs = require('yargs');
 const shell = require('shelljs');
 
 const argv = yargs.usage('Usage: bundle [options]')
-  .example('bundle --platform ios -z/--zip -i/--inline -d/--dev')
+  .example('bundle --platform ios -z/--zip -i/--inline -d/--dev -dest build -zipdest build -inlinedest build')
   .options({
     p: {
       alias: 'platform',
@@ -42,21 +32,42 @@ const argv = yargs.usage('Usage: bundle [options]')
       alias: 'dev',
       describe: '是否开发环境[true|false]',
       boolean: true
+    },
+    dest: {
+      alias: 'dest',
+      default: 'build',
+      describe: '打包文件生成目录，默认build目录',
+      type: 'string'
+    },
+    zipdest: {
+      alias: 'zipdest',
+      default: 'build',
+      describe: '打zip包生成目录，默认build目录',
+      type: 'string'
+    },
+    inlinedest: {
+      alias: 'inlinedest',
+      default: 'build',
+      describe: '打内置包生成目录，默认build目录',
+      type: 'string'
     }
   })
   .help('h')
   .alias('h', 'help')
-  .epilog('copyright 2016')
+  .epilog('copyright 2017')
   .argv;
-
-const BUNDLE_DIR = path.join(process.cwd(), 'build');
-const ZIP_DIR = path.join(process.cwd(), 'build');
-const INLINE_DIR = path.join(process.cwd(), 'build');
 
 const platform = argv.platform;
 const zip = argv.zip;
 const inline = argv.inline;
 const dev = argv.dev;
+const dest = argv.dest;
+const zipdest = argv.zipdest;
+const inlinedest = argv.inlinedest;
+
+const BUNDLE_DIR = path.join(process.cwd(), dest);
+const ZIP_DIR = path.join(process.cwd(), zipdest);
+const INLINE_DIR = path.join(process.cwd(), inlinedest);
 
 const projectName = process.env.npm_package_name.replace('rn-', '');
 const platformDir = path.join(BUNDLE_DIR, platform);
@@ -64,7 +75,7 @@ const platformInline = platform + '-inline';
 const platformInlineDir = path.join(INLINE_DIR, platformInline);
 
 function cleanBuildDir() {
-  console.log(chalk.cyan('清空build/' + platform + '目录...'));
+  console.log(chalk.cyan('清空' + dest + '/' + platform + '目录...'));
 
   let deferred = Q.defer();
   let command = [
@@ -74,10 +85,10 @@ function cleanBuildDir() {
 
   shell.exec(command, (code, stdout, stderr) => {
     if (code === 0) {
-      console.log(chalk.green('build/' + platform + '目录清空完成'));
+      console.log(chalk.green(dest + '/' + platform + '目录清空完成'));
       deferred.resolve();
     } else {
-      console.log(chalk.red('build/' + platform + '目录清空失败'));
+      console.log(chalk.red(dest + '/' + platform + '目录清空失败'));
       deferred.reject(stderr);
     }
   });
