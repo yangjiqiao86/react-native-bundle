@@ -20,7 +20,6 @@
   "homepage": "https://github.com/yangjiqiao86/react-native-bundle#readme",
   "dependencies": {
     "chalk": "^1.1.3",
-    "nodejs-fs-utils": "^1.0.26",
     "q": "^1.4.1",
     "shelljs": "^0.7.6",
     "yargs": "^6.6.0"
