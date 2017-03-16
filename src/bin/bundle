@@ -9,18 +9,18 @@ const yargs = require('yargs');
 const shell = require('shelljs');
 
 const argv = yargs.usage('Usage: bundle [options]')
-  .example('bundle --platform ios -z/--zip -i/--inline -d/--dev -dest build -zipdest build -inlinedest build')
+  .example('bundle --platform ios -z -i -d --dest build --zipdest build --inlinedest build')
   .options({
     p: {
       alias: 'platform',
       demand: true,
       choices: ['ios', 'android'],
-      describe: '打包对应平台[ios|android]',
+      describe: '对应打包平台',
       type: 'string'
     },
     z: {
       alias: 'zip',
-      describe: '是否zip打包[true|false]',
+      describe: '是否打zip包[true|false]',
       boolean: true
     },
     i: {
@@ -30,25 +30,25 @@ const argv = yargs.usage('Usage: bundle [options]')
     },
     d: {
       alias: 'dev',
-      describe: '是否开发环境[true|false]',
+      describe: '是否开发环境[true|false]，开发环境代码不进行压缩',
       boolean: true
     },
-    dest: {
+    a: {
       alias: 'dest',
       default: 'build',
-      describe: '打包文件生成目录，默认build目录',
+      describe: '打包文件生成目录',
       type: 'string'
     },
-    zipdest: {
+    b: {
       alias: 'zipdest',
       default: 'build',
-      describe: '打zip包生成目录，默认build目录',
+      describe: '打zip包生成目录',
       type: 'string'
     },
-    inlinedest: {
+    c: {
       alias: 'inlinedest',
       default: 'build',
-      describe: '打内置包生成目录，默认build目录',
+      describe: '打内置包生成目录',
       type: 'string'
     }
   })
